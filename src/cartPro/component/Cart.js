@@ -28,7 +28,7 @@ function Cart() {
                                 <th scope="col">Title</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
+                                <th scope="col">Total Price</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -49,7 +49,7 @@ function Cart() {
                                            <button className='btn btn-primary' onClick={() => updateItemQuantity(item.id, item.quantity + 1)} >+</button>
                                         </td>
                                         <td>
-                                            {item.price * item.quantity}
+                                            ${item.price * item.quantity}
                                         </td>
                                         <td>
                                         <button onClick={() => removeItem(item.id)} className='btn btn-danger ms-2'>Remove Item</button>
