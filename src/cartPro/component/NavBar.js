@@ -16,19 +16,19 @@ function NavBar() {
         price: "",
     })
 
-   useEffect(() => {
-    cartData.img = selectedImage
-   }, [selectedImage])
-   
+    useEffect(() => {
+        cartData.img = selectedImage
+    }, [selectedImage])
+
     const handleChange = (e) => {
         const { name, value } = e.target
-        setCartData((pre) => ({ ...pre,  id: uuidv4(), [name]: value }))
+        setCartData((pre) => ({ ...pre, id: uuidv4(), [name]: value }))
     }
 
     const imageChange = (e) => {
-    const size = e.target.files[0].size
+        const size = e.target.files[0].size
 
-        if (size < 200000 ) {
+        if (size < 200000) {
             if (e.target.files && e.target.files.length > 0) {
                 setSelectedImage(URL.createObjectURL(e.target.files[0]));
             }
@@ -36,26 +36,29 @@ function NavBar() {
             alert("Image size should be less than 100kb")
         }
     };
-   
+
     // console.log(URL.createObjectURL(selectedImage));
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setData((pre)=> ([...pre, cartData]))
+        setData((pre) => ([...pre, cartData]))
         setCartData({
             title: "",
             price: "",
         })
-        
+        setTimeout(() => {
+            setModal(false)
+        }, 500)
     }
 
-  useEffect(() => {
-   if (data) {
-    localStorage.setItem("cardData", JSON.stringify(data))
-   }
-  }, [data])
-  
-  const getData = JSON.parse(localStorage.getItem("cardData"))
+    useEffect(() => {
+        if (data) {
+            localStorage.setItem("cardData", JSON.stringify(data))
+        }
+    }, [data])
+
+    const getData = JSON.parse(localStorage.getItem("cardData"))
+
     return (
         <>
 
@@ -70,33 +73,33 @@ function NavBar() {
             <Modal
                 size='md'
                 isOpen={modal}
-                style={{ marginTop: "100px" }}
+                style={{ marginTop: "100px", padding: "0" }}
             >
                 <ModalHeader
                     toggle={() => setModal(!modal)}
                 >
-                    <h2>Leave Details</h2>
+                    <h2>Add Product</h2>
                 </ModalHeader>
                 <ModalBody
                     style={{ margin: "0 auto" }}
                 >
 
                     <form onSubmit={handleSubmit}>
+                       
                         <div className='form-group'>
-                            <label>Product Name <br />
-                                <input type="text" className='form-control  ' name='title' value={cartData.title} onChange={handleChange} required/>
-                            </label>
+                            <label htmlFor='title'>Product Name </label>
+                                <input id="title" type="text" className='form-control' name='title' value={cartData.title} onChange={handleChange} required />
+                            
                         </div>
                         <div className='form-group   my-3'>
-                            <label>Product Price <br />
-                                <input type="number" className='form-control' name='price' value={cartData.price} onChange={handleChange} required/>
-                            </label>
+                            <label htmlFor='price'>Product Price </label>
+                                <input id="price" type="number" className='form-control' name='price' value={cartData.price} onChange={handleChange} required />
+                            
                         </div>
 
                         <div className="form-group">
                             <label>Choose File to Upload: </label>
-                            <input type="file" className="form-control" onChange={imageChange} accept="image/png , image/jpeg, image/webp" multiple required/>
-                            <p className='text-danger'>Size Below 200kb</p>
+                            <input type="file" className="form-control" onChange={imageChange} accept="image/png , image/jpeg, image/webp" multiple required />
                         </div>
 
                         <div className='d-flex flex-row-reverse mt-3 ' >
@@ -107,14 +110,16 @@ function NavBar() {
 
                 </ModalBody>
             </Modal>
+
+
             {selectedImage && <div style={{ margin: "100px" }} className='d-flex'>
                 {getData?.map((item, index) => {
-                    return(
+                    return (
                         <ItemCard title={item.title}
                             img={item.img}
                             price={item.price}
                             key={index}
-                            item={item } />
+                            item={item} />
                     )
                 })}
             </div>
